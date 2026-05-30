@@ -6,7 +6,7 @@
     <title>🤖 أرشيف الأسلحة السرية - شركة ميراي</title>
     <style>
         :root {
-            --primary: #00f0ff; /* اللون الأزرق السايربني المحترف */
+            --primary: #00f0ff; 
             --bg: #020608;
             --glow: rgba(0, 240, 255, 0.4);
         }
@@ -43,7 +43,6 @@
             text-shadow: 0 0 8px var(--primary);
         }
 
-        /* أزرار اختيار الآلي */
         .selector-tabs {
             display: flex; justify-content: center; gap: 15px; margin-bottom: 25px;
         }
@@ -61,7 +60,6 @@
             box-shadow: 0 0 20px var(--primary);
         }
 
-        /* نافذة عرض بطاقة الآلي */
         .mech-card {
             display: none;
             animation: glitch-appear 0.4s ease;
@@ -104,7 +102,6 @@
             margin-bottom: 20px; text-align: justify;
         }
 
-        /* أشرطة المؤشرات القتالية الحيوية */
         .stat-row {
             margin-bottom: 10px;
         }
@@ -126,7 +123,6 @@
             100% { opacity: 1; filter: none; }
         }
 
-        /* ضبط العرض المتجاوب للحواسب الشاشات الكبيرة */
         @media (min-width: 768px) {
             .header-title { font-size: 26px; }
             .mech-layout { flex-direction: row; }
@@ -155,16 +151,17 @@
                 <div class="mech-info">
                     <div class="mech-name">الآلي الحارس: أومني (OMNI)</div>
                     <div class="mech-desc">
-                        <!-- ضع هنا نبذتك التعريفية الخاصة بأومني -->
                         سلاح القتل المتقدم والدرع الحامي لبرج ميراي المركزي. تم تصميمه بذكاء اصطناعي هجومي فائق القدرة وسرعة استجابة سيبرانية، ويمتلك ترسانة تدميرية ثقيلة للتعامل مع أي خرق أمني على مستوى المنطقة.
                     </div>
-                    <!-- المؤشرات الحيوية القتالية لأومني -->
                     <div class="stat-row">
                         <div class="stat-label">القوة التدميرية والاختراق (95%)</div>
                         <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 95%;"></div></div>
                     </div>
                     <div class="stat-row">
-                        <div class="stat-row">
+                        <div class="stat-label">الالتحام والدرع الدفاعي (90%)</div>
+                        <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 90%;"></div></div>
+                    </div>
+                    <div class="stat-row">
                         <div class="stat-label">السرعة والمناورة الذاتية (70%)</div>
                         <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 70%;"></div></div>
                     </div>
@@ -181,13 +178,15 @@
                 <div class="mech-info">
                     <div class="mech-name">الآلية القاتلة: نوفا (NOVA)</div>
                     <div class="mech-desc">
-                        <!-- ضع هنا نبذتك التعريفية الخاصة بنوفا -->
                         وحدة الاغتيال السريعة المتقدمة التابعة لشركة ميراي. تم هندستها بهيكل ديناميكي خفيف مخصص للتسلل الخفي واختراق حصون الأعداء، وتعتمد على دقة قاتلة في تنفيذ الضربات الاستباقية دون ترك أي أثر.
                     </div>
-                    <!-- المؤشرات الحيوية القتالية لنوفا -->
                     <div class="stat-row">
                         <div class="stat-label">القوة التدميرية والاختراق (75%)</div>
                         <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 75%;"></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-label">أنظمة التخفي والتسلل (95%)</div>
+                        <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 95%;"></div></div>
                     </div>
                     <div class="stat-row">
                         <div class="stat-label">السرعة والمناورة الذاتية (98%)</div>
