@@ -3,214 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select=none">
-    <title>🤖 أرشيف الأسلحة السرية - شركة ميراي</title>
+    <title>🚨 أرشيف ميراي - السلاح أومني</title>
     <style>
-        :root {
-            --primary: #00f0ff; 
-            --bg: #020608;
-            --glow: rgba(0, 240, 255, 0.4);
-        }
-
-        body {
-            background-color: var(--bg);
-            color: var(--primary);
-            font-family: 'Courier New', Courier, monospace, sans-serif;
-            margin: 0; padding: 15px;
-            min-height: 100vh; box-sizing: border-box;
-            display: flex; flex-direction: column; align-items: center;
-        }
-
-        body::before {
-            content: " "; display: block; position: fixed;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%);
-            z-index: 20; background-size: 100% 4px; pointer-events: none;
-        }
-
-        .arsenal-box {
-            border: 2px solid var(--primary);
-            background: rgba(2, 12, 18, 0.95);
-            box-shadow: 0 0 25px var(--glow), inset 0 0 15px rgba(0, 240, 255, 0.1);
-            max-width: 800px; width: 100%;
-            padding: 25px; border-radius: 8px;
-            text-align: center; z-index: 10;
-        }
-
-        .header-title {
-            font-size: 22px; font-weight: bold;
-            border-bottom: 2px dashed var(--primary);
-            padding-bottom: 12px; margin-bottom: 25px;
-            text-shadow: 0 0 8px var(--primary);
-        }
-
-        .selector-tabs {
-            display: flex; justify-content: center; gap: 15px; margin-bottom: 25px;
-        }
-
-        .btn-mech {
-            background: transparent; color: var(--primary);
-            border: 2px solid var(--primary);
-            padding: 12px 25px; font-family: monospace; font-size: 16px;
-            cursor: pointer; font-weight: bold; transition: all 0.3s; width: 48%;
-            letter-spacing: 1px;
-        }
-
-        .btn-mech.active {
-            background: var(--primary); color: #000;
-            box-shadow: 0 0 20px var(--primary);
-        }
-
-        .mech-card {
-            display: none;
-            animation: glitch-appear 0.4s ease;
-            text-align: right;
-        }
-
-        .mech-card.active {
-            display: block;
-        }
-
-        .mech-layout {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .mech-img-frame {
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            background: #000000; padding: 10px;
-            border-radius: 6px; display: flex; justify-content: center;
-        }
-
-        .mech-image {
-            max-width: 100%; max-height: 350px; object-fit: contain;
-        }
-
-        .mech-info {
-            background: rgba(0, 0, 0, 0.4);
-            padding: 15px; border-radius: 6px;
-            border-left: 3px solid var(--primary);
-        }
-
-        .mech-name {
-            font-size: 24px; font-weight: bold; margin-bottom: 10px;
-            color: #ffffff; text-shadow: 0 0 5px var(--primary);
-        }
-
-        .mech-desc {
-            font-size: 17px; line-height: 1.6; color: #cceeff;
-            margin-bottom: 20px; text-align: justify;
-        }
-
-        .stat-row {
-            margin-bottom: 10px;
-        }
-        .stat-label {
-            font-size: 14px; margin-bottom: 5px; color: #88ccff;
-        }
-        .stat-bar-bg {
-            background: #06151c; height: 10px; border-radius: 3px; overflow: hidden;
-            border: 1px solid rgba(0, 240, 255, 0.2);
-        }
-        .stat-bar-fill {
-            background: var(--primary); height: 100%; width: 0%;
-            box-shadow: 0 0 10px var(--primary);
-            transition: width 1s ease-in-out;
-        }
-
-        @keyframes glitch-appear {
-            0% { opacity: 0; filter: brightness(2); }
-            100% { opacity: 1; filter: none; }
-        }
-
-        @media (min-width: 768px) {
-            .header-title { font-size: 26px; }
-            .mech-layout { flex-direction: row; }
-            .mech-img-frame { width: 40%; }
-            .mech-info { width: 60%; }
-        }
+        :root { --primary: #00f0ff; --bg: #020608; --glow: rgba(0, 240, 255, 0.4); }
+        body { background-color: var(--bg); color: var(--primary); font-family: 'Courier New', Courier, monospace, sans-serif; margin: 0; padding: 20px; min-height: 100vh; box-sizing: border-box; display: flex; justify-content: center; align-items: center; }
+        body::before { content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%); z-index: 20; background-size: 100% 4px; pointer-events: none; }
+        .mech-box { border: 3px solid var(--primary); background: rgba(2, 12, 18, 0.95); box-shadow: 0 0 30px var(--glow), inset 0 0 15px rgba(0, 240, 255, 0.1); max-width: 750px; width: 100%; padding: 30px; border-radius: 4px; z-index: 10; text-align: right; }
+        .header { font-size: 24px; font-weight: bold; border-bottom: 2px dashed var(--primary); padding-bottom: 12px; margin-bottom: 25px; text-shadow: 0 0 8px var(--primary); text-align: center; }
+        .layout { display: flex; flex-direction: column; gap: 25px; }
+        .img-frame { border: 1px solid rgba(0, 240, 255, 0.3); background: #000000; padding: 10px; display: flex; justify-content: center; position: relative; }
+        .img-frame::after { content: "TARGET LOCKED"; position: absolute; top: 10px; left: 10px; font-size: 11px; background: rgba(0, 240, 255, 0.2); padding: 2px 6px; font-weight: bold; }
+        .image { max-width: 100%; max-height: 350px; object-fit: contain; }
+        .name { font-size: 26px; font-weight: bold; margin-bottom: 12px; color: #ffffff; text-shadow: 0 0 5px var(--primary); }
+        .desc { font-size: 18px; line-height: 1.6; color: #cceeff; margin-bottom: 25px; text-align: justify; }
+        .stat-row { margin-bottom: 12px; }
+        .stat-label { font-size: 14px; margin-bottom: 5px; color: #88ccff; }
+        .stat-bar-bg { background: #06151c; height: 12px; border-radius: 2px; overflow: hidden; border: 1px solid rgba(0, 240, 255, 0.2); }
+        .stat-bar-fill { background: var(--primary); height: 100%; width: 95%; box-shadow: 0 0 10px var(--primary); }
+        @media (min-width: 768px) { .layout { flex-direction: row; } .img-frame { width: 45%; } .info { width: 55%; } }
     </style>
 </head>
 <body>
-
-    <div class="arsenal-box">
-        <div class="header-title">📁 مشروع الأسلحة المحظورة - قاعدة بيانات ميراي</div>
-        
-        <!-- أزرار التبديل بين السلاحين -->
-        <div class="selector-tabs">
-            <button class="btn-mech active" onclick="switchMech('omni', this)">المشروع 01: OMNI</button>
-            <button class="btn-mech" onclick="switchMech('nova', this)">المشروع 02: NOVA</button>
-        </div>
-
-        <!-- بطاقة الآلي الأول: أومني -->
-        <div id="mechOmni" class="mech-card active">
-            <div class="mech-layout">
-                <div class="mech-img-frame">
-                    <img class="mech-image" src="omni.png" alt="Omni Mech">
+    <div class="mech-box">
+        <div class="header">⚠️ قـاعـدة بـيـانـات مـيـراي - الـمـلـف 01 ⚠️</div>
+        <div class="layout">
+            <div class="img-frame"><img class="image" src="omni.png" alt="OMNI"></div>
+            <div class="info">
+                <div class="name">الآلي المدجج: أومني (OMNI)</div>
+                <div class="desc">سلاح القتل المتقدم والدرع الحامي لبرج ميراي المركزي. تم تصميمه بذكاء اصطناعي هجومي فائق القدرة وسرعة استجابة سيبرانية، ويمتلك ترسانة تدميرية ثقيلة للتعامل مع أي خرق أمني على مستوى المنطقة.</div>
+                <div class="stat-row">
+                    <div class="stat-label">القوة التدميرية والاختراق (95%)</div>
+                    <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 95%;"></div></div>
                 </div>
-                <div class="mech-info">
-                    <div class="mech-name">الآلي الحارس: أومني (OMNI)</div>
-                    <div class="mech-desc">
-                        سلاح القتل المتقدم والدرع الحامي لبرج ميراي المركزي. تم تصميمه بذكاء اصطناعي هجومي فائق القدرة وسرعة استجابة سيبرانية، ويمتلك ترسانة تدميرية ثقيلة للتعامل مع أي خرق أمني على مستوى المنطقة.
-                    </div>
-                    <div class="stat-row">
-                        <div class="stat-label">القوة التدميرية والاختراق (95%)</div>
-                        <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 95%;"></div></div>
-                    </div>
-                    <div class="stat-row">
-                        <div class="stat-label">الالتحام والدرع الدفاعي (90%)</div>
-                        <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 90%;"></div></div>
-                    </div>
-                    <div class="stat-row">
-                        <div class="stat-label">السرعة والمناورة الذاتية (70%)</div>
-                        <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 70%;"></div></div>
-                    </div>
+                <div class="stat-row">
+                    <div class="stat-label">الدرع والدفاع الفولاذي (90%)</div>
+                    <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 90%;"></div></div>
                 </div>
             </div>
         </div>
-
-        <!-- بطاقة الآلي الثاني: نوفا -->
-        <div id="mechNova" class="mech-card">
-            <div class="mech-layout">
-                <div class="mech-img-frame">
-                    <img class="mech-image" src="nova.png" alt="Nova Mech">
-                </div>
-                <div class="mech-info">
-                    <div class="mech-name">الآلية القاتلة: نوفا (NOVA)</div>
-                    <div class="mech-desc">
-                        وحدة الاغتيال السريعة المتقدمة التابعة لشركة ميراي. تم هندستها بهيكل ديناميكي خفيف مخصص للتسلل الخفي واختراق حصون الأعداء، وتعتمد على دقة قاتلة في تنفيذ الضربات الاستباقية دون ترك أي أثر.
-                    </div>
-                    <div class="stat-row">
-                        <div class="stat-label">القوة التدميرية والاختراق (75%)</div>
-                        <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 75%;"></div></div>
-                    </div>
-                    <div class="stat-row">
-                        <div class="stat-label">أنظمة التخفي والتسلل (95%)</div>
-                        <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 95%;"></div></div>
-                    </div>
-                    <div class="stat-row">
-                        <div class="stat-label">السرعة والمناورة الذاتية (98%)</div>
-                        <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 98%;"></div></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
-
-    <script>
-        function switchMech(mechType, btn) {
-            document.querySelectorAll('.btn-mech').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.mech-card').forEach(card => card.classList.remove('active'));
-            
-            btn.classList.add('active');
-            
-            if(mechType === 'omni') {
-                document.getElementById('mechOmni').classList.add('active');
-            } else {
-                document.getElementById('mechNova').classList.add('active');
-            }
-        }
-    </script>
 </body>
 </html>
