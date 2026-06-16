@@ -1,46 +1,188 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-select=none">
-    <title>🚨 أرشيف ميراي - السلاح أومني</title>
-    <style>
-        :root { --primary: #00f0ff; --bg: #020608; --glow: rgba(0, 240, 255, 0.4); }
-        body { background-color: var(--bg); color: var(--primary); font-family: 'Courier New', Courier, monospace, sans-serif; margin: 0; padding: 20px; min-height: 100vh; box-sizing: border-box; display: flex; justify-content: center; align-items: center; }
-        body::before { content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%); z-index: 20; background-size: 100% 4px; pointer-events: none; }
-        .mech-box { border: 3px solid var(--primary); background: rgba(2, 12, 18, 0.95); box-shadow: 0 0 30px var(--glow), inset 0 0 15px rgba(0, 240, 255, 0.1); max-width: 750px; width: 100%; padding: 30px; border-radius: 4px; z-index: 10; text-align: right; }
-        .header { font-size: 24px; font-weight: bold; border-bottom: 2px dashed var(--primary); padding-bottom: 12px; margin-bottom: 25px; text-shadow: 0 0 8px var(--primary); text-align: center; }
-        .layout { display: flex; flex-direction: column; gap: 25px; }
-        .img-frame { border: 1px solid rgba(0, 240, 255, 0.3); background: #000000; padding: 10px; display: flex; justify-content: center; position: relative; }
-        .img-frame::after { content: "TARGET LOCKED"; position: absolute; top: 10px; left: 10px; font-size: 11px; background: rgba(0, 240, 255, 0.2); padding: 2px 6px; font-weight: bold; }
-        .image { max-width: 100%; max-height: 350px; object-fit: contain; }
-        .name { font-size: 26px; font-weight: bold; margin-bottom: 12px; color: #ffffff; text-shadow: 0 0 5px var(--primary); }
-        .desc { font-size: 18px; line-height: 1.6; color: #cceeff; margin-bottom: 25px; text-align: justify; }
-        .stat-row { margin-bottom: 12px; }
-        .stat-label { font-size: 14px; margin-bottom: 5px; color: #88ccff; }
-        .stat-bar-bg { background: #06151c; height: 12px; border-radius: 2px; overflow: hidden; border: 1px solid rgba(0, 240, 255, 0.2); }
-        .stat-bar-fill { background: var(--primary); height: 100%; width: 95%; box-shadow: 0 0 10px var(--primary); }
-        @media (min-width: 768px) { .layout { flex-direction: row; } .img-frame { width: 45%; } .info { width: 55%; } }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>محطة اعتراض الإشارات</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
+
 </head>
+
 <body>
-    <div class="mech-box">
-        <div class="header">⚠️ قـاعـدة بـيـانـات مـيـراي - الـمـلـف 01 ⚠️</div>
-        <div class="layout">
-            <div class="img-frame"><img class="image" src="omni.png" alt="OMNI"></div>
-            <div class="info">
-                <div class="name">الآلي المدجج: أومني (OMNI)</div>
-                <div class="desc">سلاح القتل المتقدم والدرع الحامي لبرج ميراي المركزي. تم تصميمه بذكاء اصطناعي هجومي فائق القدرة وسرعة استجابة سيبرانية، ويمتلك ترسانة تدميرية ثقيلة للتعامل مع أي خرق أمني على مستوى المنطقة.</div>
-                <div class="stat-row">
-                    <div class="stat-label">القوة التدميرية والاختراق (95%)</div>
-                    <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 95%;"></div></div>
-                </div>
-                <div class="stat-row">
-                    <div class="stat-label">الدرع والدفاع الفولاذي (90%)</div>
-                    <div class="stat-bar-bg"><div class="stat-bar-fill" style="width: 90%;"></div></div>
-                </div>
-            </div>
-        </div>
-    </div>
+
+<div class="scanlines"></div>
+<div class="radar-grid"></div>
+
+<div class="container">
+
+<header>
+
+<h1>محطة اعتراض الإشارات</h1>
+
+<p class="subtitle">
+
+وحدة الاستقبال الميدانية 07
+
+</p>
+
+</header>
+
+<section class="signal-panel">
+
+<div class="status">
+
+<p>
+المصدر:
+<span>الشرق</span>
+</p>
+
+<p>
+الحالة:
+<span id="statusText">قيد التحليل</span>
+</p>
+
+<p>
+نوع الإشارة:
+<span>غير معروف</span>
+</p>
+
+</div>
+
+<div class="radar-screen">
+
+<div class="sweep"></div>
+
+<div class="radar-center"></div>
+
+</div>
+
+<button id="playBtn">
+
+▶ تشغيل الإشارة
+
+</button>
+
+<audio id="signalAudio">
+
+<source src="signal.mp3" type="audio/mpeg">
+
+</audio>
+
+</section>
+
+<section class="morse-guide">
+
+<button id="guideBtn">
+
+دليل مورس
+
+</button>
+
+<div id="guideBox" class="hidden">
+
+<h2>دليل سريع</h2>
+
+<div class="guide-grid">
+
+<div>A = .-</div>
+<div>B = -...</div>
+<div>C = -.-.</div>
+<div>D = -..</div>
+<div>E = .</div>
+
+<div>F = ..-.</div>
+<div>G = --.</div>
+<div>H = ....</div>
+<div>I = ..</div>
+<div>J = .---</div>
+
+<div>K = -.-</div>
+<div>L = .-..</div>
+<div>M = --</div>
+<div>N = -.</div>
+<div>O = ---</div>
+
+<div>P = .--.</div>
+<div>Q = --.-</div>
+<div>R = .-.</div>
+<div>S = ...</div>
+<div>T = -</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="decoder">
+
+<h2>
+
+وحدة فك الإشارة
+
+</h2>
+
+<div id="currentInput">
+
+...
+
+</div>
+
+<div class="controls">
+
+<button id="dotBtn">
+
+● نقطة
+
+</button>
+
+<button id="dashBtn">
+
+▬ شرطة
+
+</button>
+
+<button id="letterBtn">
+
+/ حرف جديد
+
+</button>
+
+<button id="clearBtn">
+
+مسح
+
+</button>
+
+</div>
+
+<button id="decodeBtn" class="decode">
+
+تحليل الرسالة
+
+</button>
+
+</section>
+
+<section id="successScreen" class="hidden">
+
+<div class="success-box">
+
+تم فك الإشارة بنجاح.
+
+</div>
+
+</section>
+
+</div>
+
+<script src="script.js"></script>
+
 </body>
+
 </html>
