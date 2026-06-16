@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>إشارة من الشرق</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Tajawal:wght@300;400;700;900&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --green:#00ff88;--green2:#00aa55;--green-glow:rgba(0,255,136,0.5);
+  --amber:#ff9500;--red:#ff2020;
+  --bg:#010a03;--surface:#020d04;
+  --mono:'Share Tech Mono',monospace;--arabic:'Tajawal',sans-serif;
+}
+html,body{width:100%;min-height:100vh;background:var(--bg);color:#aaa;font-family:var(--arabic);overflow-x:hidden;}
+
+body::before{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
+background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.15) 2px,rgba(0,0,0,0.15) 4px);}
+
+.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+background-image:linear-gradient(rgba(0,80,30,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,80,30,0.06) 1px,transparent 1px);
+background-size:44px 44px;animation:gd 30s linear infinite;}
+@keyframes gd{from{background-position:0 0}to{background-position:44px 44px}}
+
+/* ── MAIN ── */
+#main{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:0 16px 60px;}
+
+.status-bar{width:100%;max-width:600px;padding:10px 0 8px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #031a08;margin-bottom:28px;}
+.sb-id{font-family:var(--mono);font-size:9px;color:#0d2a12;letter-spacing:0.4em;}
+.sb-live{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:9px;color:var(--green2);letter-spacing:0.3em;}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:ld 1s infinite;}
+@keyframes ld{0%,100%{opacity:1;box-shadow:0 0 6px var(--green)}50%{opacity:0.2;box-shadow:none}}
+
+/* ── RADAR ── */
+.radar-wrap{position:relative;width:min(240px,60vw);aspect-ratio:1;margin:16px auto 24px;}
+#radarCanvas{width:100%;height:100%;display:block;}
+
+/* ── SIGNAL HEADER ── */
+.signal-header{text-align:center;margin-bottom:24px;max-width:500px;padding:0 4px;}
+.sh-tag{font-family:var(--mono);font-size:8px;color:#0d2a12;letter-spacing:0.45em;margin-bottom:10px;}
+.sh-title{font-family:var(--arabic);font-size:clamp(0.95rem,3.5vw,1.2rem);font-weight:700;color:#999;line-height:1.75;margin-bottom:8px;}
+.sh-sub{font-family:var(--mono);font-size:8px;color:#1a3a20;letter-spacing:0.25em;}
+
+/* ── MORSE DISPLAY ── */
+.morse-display{width:100%;max-width:600px;background:var(--surface);border:1px solid #031a08;border-top:2px solid var(--green2);padding:18px;margin-bottom:20px;}
+.md-label{font-family:var(--mono);font-size:8px;color:#0d2a12;letter-spacing:0.4em;margin-bottom:12px;}
+
+.wave-viz{display:flex;align-items:center;gap:2px;height:44px;margin-bottom:14px;}
+.wv-bar{flex:1;background:#031a08;border-radius:1px;min-height:3px;height:3px;max-height:40px;transition:height 0.05s,background 0.08s;}
+.wv-bar.on{background:var(--green);box-shadow:0 0 4px var(--green-glow);}
+
+.morse-strip{display:flex;align-items:center;gap:4px;flex-wrap:wrap;min-height:26px;}
+.ms-sym{font-family:var(--mono);font-size:17px;color:#031a08;transition:color 0.08s,text-shadow 0.08s;line-height:1;}
+.ms-sym.on{color:var(--green);text-shadow:0 0 8px var(--green-glow);}
+.ms-space{width:14px;display:inline-block;}
+
+.sig-strength{display:flex;align-items:center;gap:8px;margin-top:12px;}
+.ss-label{font-family:var(--mono);font-size:8px;color:#0d2a12;letter-spacing:0.3em;}
+.ss-bars{display:flex;gap:3px;align-items:flex-end;}
+.ss-bar{width:6px;background:#031a08;border-radius:1px;}
+.ss-bar.on{background:var(--green2);}
+
+/* ── DIRECTION ── */
+.direction-block{width:100%;max-width:600px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:#031a08;margin-bottom:20px;}
+.db-cell{background:var(--surface);padding:12px 10px;}
+.db-label{font-family:var(--mono);font-size:7px;color:#0d2a12;letter-spacing:0.3em;margin-bottom:5px;}
+.db-val{font-family:var(--mono);font-size:clamp(9px,2.5vw,11px);color:var(--green2);}
+.db-val.amber{color:var(--amber);}
+
+/* ── DECODER ── */
+.decoder{width:100%;max-width:600px;background:var(--surface);border:1px solid #031a08;padding:18px;margin-bottom:20px;}
+.dec-label{font-family:var(--mono);font-size:8px;color:#0d2a12;letter-spacing:0.4em;margin-bottom:12px;}
+.dec-hint{font-family:var(--arabic);font-size:0.88rem;color:#1a3a20;line-height:1.75;margin-bottom:14px;font-weight:300;}
+
+.morse-ref{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-bottom:16px;}
+@media(min-width:420px){.morse-ref{grid-template-columns:repeat(6,1fr);}}
+@media(min-width:600px){.morse-ref{grid-template-columns:repeat(8,1fr);}}
+.mr-cell{background:#010d03;padding:5px 3px;text-align:center;border:1px solid #021005;}
+.mr-letter{font-family:var(--mono);font-size:10px;color:#1a4020;margin-bottom:2px;}
+.mr-code{font-family:var(--mono);font-size:8px;color:#0d2a12;letter-spacing:1px;}
+
+.answer-wrap{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap;}
+.answer-input{
+  flex:1;min-width:140px;background:#010d03;border:1px solid #031a08;
+  font-family:var(--mono);font-size:1.1rem;color:#ccc;padding:12px 14px;
+  outline:none;letter-spacing:0.15em;transition:border-color 0.2s;
+  direction:ltr;text-align:center;
+}
+.answer-input:focus{border-color:var(--green2);}
+.answer-input.correct{border-color:var(--green);color:var(--green);box-shadow:0 0 16px rgba(0,255,136,0.15);}
+.answer-input.wrong{border-color:var(--red);animation:shake 0.3s ease-in-out;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+.btn-decode{
+  font-family:var(--mono);font-size:9px;letter-spacing:0.3em;
+  padding:12px 18px;background:transparent;border:1px solid var(--green2);
+  color:var(--green2);cursor:pointer;transition:all 0.2s;white-space:nowrap;
+}
+.btn-decode:hover{background:rgba(0,170,85,0.1);}
+.btn-decode:active{transform:scale(0.97);}
+
+.feedback{font-family:var(--mono);font-size:9px;letter-spacing:0.3em;margin-top:10px;min-height:16px;}
+.feedback.ok{color:var(--green);}
+.feedback.err{color:var(--red);}
+
+/* ── SUCCESS ── */
+#success{
+  display:none;width:100%;max-width:600px;
+  border:1px solid var(--green2);border-top:2px solid var(--green);
+  background:#010d03;padding:22px 18px;text-align:center;
+}
+.suc-title{font-family:var(--arabic);font-size:clamp(1.05rem,4vw,1.35rem);font-weight:700;color:var(--green);margin-bottom:12px;text-shadow:0 0 16px var(--green-glow);}
+.suc-body{font-family:var(--arabic);font-size:0.92rem;color:#1a4a20;line-height:1.9;font-weight:300;}
+.suc-body strong{color:#3a8a50;}
+
+/* ── PLAY SCREEN ── */
+#play-screen{
+  position:fixed;inset:0;z-index:500;background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:22px;padding:32px;text-align:center;
+}
+.ps-tag{font-family:var(--mono);font-size:8px;color:#0d2a12;letter-spacing:0.5em;}
+.ps-title{font-family:var(--arabic);font-size:clamp(0.95rem,3.5vw,1.2rem);color:#333;font-weight:300;line-height:1.85;max-width:300px;}
+.ps-btn{
+  width:76px;height:76px;border-radius:50%;border:1.5px solid var(--green2);
+  background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s;position:relative;animation:btnPulse 2s infinite;
+}
+.ps-btn::before{content:'';position:absolute;inset:-8px;border-radius:50%;border:1px solid rgba(0,255,136,0.15);animation:ring 2s infinite;}
+@keyframes ring{0%{transform:scale(1);opacity:0.5}100%{transform:scale(1.5);opacity:0}}
+@keyframes btnPulse{0%,100%{box-shadow:0 0 0 0 rgba(0,255,136,0.15)}50%{box-shadow:0 0 0 10px rgba(0,255,136,0)}}
+.ps-btn svg{width:30px;height:30px;fill:var(--green);}
+.ps-label{font-family:var(--mono);font-size:8px;color:#0d2a12;letter-spacing:0.4em;}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<!-- PLAY SCREEN -->
+<div id="play-screen">
+  <div class="ps-tag">— إشارة واردة من الشرق —</div>
+  <div class="ps-title">التقطت الالية إشارة راديوية ضعيفة متكررة — هل تستطيع فك شيفرتها؟</div>
+  <button class="ps-btn" onclick="startExperience()">
+    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+  </button>
+  <div class="ps-label">اضغط للاستماع</div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+
+  <div class="status-bar">
+    <span class="sb-id">SIGNAL_RCV // EAST_BEARING</span>
+    <div class="sb-live"><div class="live-dot"></div>استقبال</div>
+  </div>
+
+  <div class="radar-wrap">
+    <canvas id="radarCanvas"></canvas>
+  </div>
+
+  <div class="signal-header">
+    <div class="sh-tag">MORSE_SIGNAL // WEAK // REPEATING</div>
+    <div class="sh-title">تم التقاط إشارة راديوية ضعيفة متكررة من الجهة الشرقية — الرسالة مشفرة بشيفرة مورس</div>
+    <div class="sh-sub">ORIGIN: UNKNOWN // DISTANCE: ~4.2KM // BEARING: 087°</div>
+  </div>
+
+  <div class="morse-display">
+    <div class="md-label">البث الصوتي المستقبل / LIVE MORSE SIGNAL</div>
+    <div class="wave-viz" id="waveViz"></div>
+    <div class="morse-strip" id="morseStrip"></div>
+    <div class="sig-strength">
+      <span class="ss-label">قوة الإشارة</span>
+      <div class="ss-bars" id="ssBars"></div>
+    </div>
+  </div>
+
+  <div class="direction-block">
+    <div class="db-cell"><div class="db-label">الاتجاه</div><div class="db-val">087° شرق</div></div>
+    <div class="db-cell"><div class="db-label">التردد</div><div class="db-val">7.042 MHz</div></div>
+    <div class="db-cell"><div class="db-label">الحالة</div><div class="db-val amber">متكرر</div></div>
+  </div>
+
+  <div class="decoder">
+    <div class="dec-label">فك الشيفرة / MORSE DECODER</div>
+    <div class="dec-hint">استمع بتمعن — النقطة ( . ) صوت قصير، الشرطة ( — ) صوت طويل. ما الكلمة التي تقولها الإشارة؟</div>
+    <div class="morse-ref" id="morseRef"></div>
+    <div class="answer-wrap">
+      <input class="answer-input" id="answerInput" type="text" placeholder="اكتب اجابتك..." maxlength="10" autocomplete="off" autocorrect="off" spellcheck="false"/>
+      <button class="btn-decode" onclick="checkAnswer()">فك الشيفرة</button>
+    </div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+
+  <div id="success">
+    <div class="suc-title">تم فك الشيفرة — HELP</div>
+    <div class="suc-body">
+      كلمة واحدة فقط — <strong>HELP</strong><br><br>
+      من يستغيث من هناك؟<br>
+      الالية تحدد الموقع بدقة... المسافة 4.2 كيلومتر شرقا.<br>
+      القرار لك — هل تتجه نحو الإشارة؟
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* MORSE MAP */
+const MORSE_MAP = {
+  A:'.-',B:'-...',C:'-.-.',D:'-..',E:'.',F:'..-.',G:'--.',H:'....',
+  I:'..',J:'.---',K:'-.-',L:'.-..',M:'--',N:'-.',O:'---',P:'.--.',
+  Q:'--.-',R:'.-.',S:'...',T:'-',U:'..-',V:'...-',W:'.--',X:'-..-',
+  Y:'-.--',Z:'--..'
+};
+
+/* HELP = .... . .-.. .--.  */
+const SEQ = [
+  {t:'dot'},{t:'dot'},{t:'dot'},{t:'dot'}, // H
+  {t:'lgap'},
+  {t:'dot'},                                // E
+  {t:'lgap'},
+  {t:'dot'},{t:'dash'},{t:'dot'},{t:'dot'},// L
+  {t:'lgap'},
+  {t:'dot'},{t:'dash'},{t:'dash'},{t:'dot'},{t:'wgap'}// P
+];
+
+const DOT  = 0.12;
+const DASH = 0.36;
+const EGAP = 0.12;
+const LGAP = 0.36;
+const WGAP = 0.84;
+const REPEAT = 2.0;
+
+/* ── RADAR ── */
+(function(){
+  const c = document.getElementById('radarCanvas');
+  const ctx = c.getContext('2d');
+  const SZ = 240; c.width = SZ; c.height = SZ;
+  const cx = SZ/2, cy = SZ/2, R = SZ/2 - 5;
+  let angle = 0, blipAlpha = 0;
+  const blipA = (87 - 90) * Math.PI / 180;
+  const blipR = 0.62;
+
+  function draw(){
+    ctx.clearRect(0,0,SZ,SZ);
+    ctx.fillStyle='#010d03';
+    ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.fill();
+
+    [0.25,0.5,0.75,1].forEach(f=>{
+      ctx.strokeStyle='rgba(0,80,30,0.18)';ctx.lineWidth=0.5;
+      ctx.beginPath();ctx.arc(cx,cy,R*f,0,Math.PI*2);ctx.stroke();
+    });
+    ctx.strokeStyle='rgba(0,80,30,0.12)';ctx.lineWidth=0.5;
+    ctx.beginPath();ctx.moveTo(cx-R,cy);ctx.lineTo(cx+R,cy);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx,cy-R);ctx.lineTo(cx,cy+R);ctx.stroke();
+
+    for(let a = angle - 1.2; a < angle; a += 0.025){
+      const al = (a-(angle-1.2))/1.2*0.28;
+      ctx.strokeStyle = 'rgba(0,255,136,'+al+')';
+      ctx.lineWidth = R;
+      ctx.beginPath();ctx.arc(cx,cy,R/2,a,a+0.025);ctx.stroke();
+    }
+    ctx.strokeStyle='rgba(0,255,136,0.75)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(cx,cy);
+    ctx.lineTo(cx+Math.cos(angle)*R, cy+Math.sin(angle)*R);
+    ctx.stroke();
+
+    const diff = ((angle - blipA) % (Math.PI*2) + Math.PI*2) % (Math.PI*2);
+    if(diff < 0.08) blipAlpha = 1;
+    else blipAlpha = Math.max(0, blipAlpha - 0.011);
+    if(blipAlpha > 0){
+      const bx = cx + Math.cos(blipA)*blipR*R;
+      const by = cy + Math.sin(blipA)*blipR*R;
+      ctx.shadowColor='rgba(0,255,136,0.9)';ctx.shadowBlur=10;
+      ctx.fillStyle = 'rgba(0,255,136,'+blipAlpha+')';
+      ctx.beginPath();ctx.arc(bx,by,4,0,Math.PI*2);ctx.fill();
+      ctx.shadowBlur=0;
+      ctx.strokeStyle='rgba(0,255,136,'+(blipAlpha*0.35)+')';ctx.lineWidth=1;
+      ctx.beginPath();ctx.arc(bx,by,8+blipAlpha*8,0,Math.PI*2);ctx.stroke();
+    }
+
+    ctx.strokeStyle='rgba(0,100,40,0.35)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.stroke();
+    ctx.fillStyle='rgba(0,255,136,0.35)';
+    ctx.beginPath();ctx.arc(cx,cy,2,0,Math.PI*2);ctx.fill();
+
+    angle = (angle+0.022)%(Math.PI*2);
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ── WAVE BARS ── */
+const waveViz = document.getElementById('waveViz');
+for(let i=0;i<30;i++){
+  const b=document.createElement('div');b.className='wv-bar';
+  waveViz.appendChild(b);
+}
+function setWave(on, intensity){
+  document.querySelectorAll('.wv-bar').forEach(b=>{
+    if(on){
+      b.style.height=(5+Math.random()*36*(intensity||0.7))+'px';
+      b.classList.add('on');
+    } else {
+      b.style.height='3px'; b.classList.remove('on');
+    }
+  });
+}
+
+/* ── MORSE STRIP ── */
+const morseStrip = document.getElementById('morseStrip');
+// H . E . L . P
+const STRIP_CHARS = '.... . .-.. .--.';
+let symEls = [];
+STRIP_CHARS.split('').forEach((ch,i)=>{
+  const el = document.createElement('span');
+  if(ch === ' '){ el.className='ms-space'; el.innerHTML='&nbsp;'; }
+  else { el.className='ms-sym'; el.textContent=ch; symEls.push(el); }
+  morseStrip.appendChild(el);
+});
+
+/* ── SIGNAL BARS ── */
+const ssBars = document.getElementById('ssBars');
+[8,12,16,20,16,12,8].forEach((h,i)=>{
+  const b=document.createElement('div');
+  b.className='ss-bar'+(i<5?' on':'');
+  b.style.height=h+'px';ssBars.appendChild(b);
+});
+
+/* ── MORSE REF ── */
+const morseRef = document.getElementById('morseRef');
+Object.entries(MORSE_MAP).forEach(([l,c])=>{
+  const cell=document.createElement('div');cell.className='mr-cell';
+  cell.innerHTML='<div class="mr-letter">'+l+'</div><div class="mr-code">'+c+'</div>';
+  morseRef.appendChild(cell);
+});
+
+/* ── WEB AUDIO ── */
+let actx = null;
+function getCtx(){
+  if(!actx) actx=new(window.AudioContext||window.webkitAudioContext)();
+  if(actx.state==='suspended') actx.resume();
+  return actx;
+}
+
+function beep(startTime, duration){
+  const ctx = getCtx();
+  const freq = 680;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  const filt = ctx.createBiquadFilter();
+  filt.type='bandpass'; filt.frequency.value=freq; filt.Q.value=4;
+  osc.type='sine'; osc.frequency.value=freq;
+  gain.gain.setValueAtTime(0, startTime);
+  gain.gain.linearRampToValueAtTime(0.28, startTime+0.008);
+  gain.gain.setValueAtTime(0.28, startTime+duration-0.01);
+  gain.gain.linearRampToValueAtTime(0, startTime+duration);
+  osc.connect(filt); filt.connect(gain); gain.connect(ctx.destination);
+  osc.start(startTime); osc.stop(startTime+duration+0.02);
+
+  // subtle static
+  const buf=ctx.createBuffer(1,Math.ceil(ctx.sampleRate*(duration+0.02)),ctx.sampleRate);
+  const data=buf.getChannelData(0);
+  for(let i=0;i<data.length;i++) data[i]=(Math.random()*2-1)*0.018;
+  const src=ctx.createBufferSource();
+  const sg=ctx.createGain(); sg.gain.value=0.06;
+  src.buffer=buf; src.connect(sg); sg.connect(ctx.destination);
+  src.start(startTime); src.stop(startTime+duration+0.02);
+}
+
+/* ── PLAY SEQUENCE ── */
+let morseTimer = null;
+let running = false;
+let symPlayIdx = 0;
+
+function playMorse(){
+  const ctx = getCtx();
+  let t = ctx.currentTime + 0.3;
+  let events = [];
+  let si = 0; // symbol index into symEls
+
+  SEQ.forEach(elem=>{
+    if(elem.t === 'dot'){
+      events.push({at:t, dur:DOT, si});
+      beep(t, DOT);
+      t += DOT + EGAP; si++;
+    } else if(elem.t === 'dash'){
+      events.push({at:t, dur:DASH, si});
+      beep(t, DASH);
+      t += DASH + EGAP; si++;
+    } else if(elem.t === 'lgap'){
+      t += LGAP - EGAP;
+    } else if(elem.t === 'wgap'){
+      t += WGAP;
+    }
+  });
+
+  const totalDur = t - ctx.currentTime;
+
+  // Reset symbols
+  symEls.forEach(el=>el.classList.remove('on'));
+
+  // Schedule visual sync
+  events.forEach(ev=>{
+    const delay = (ev.at - ctx.currentTime)*1000;
+    setTimeout(()=>{
+      setWave(true, ev.dur > 0.25 ? 0.85 : 0.5);
+      if(symEls[ev.si]) symEls[ev.si].classList.add('on');
+      setTimeout(()=>{
+        setWave(false);
+        if(symEls[ev.si]) symEls[ev.si].classList.remove('on');
+      }, ev.dur*1000 - 10);
+    }, Math.max(0, delay));
+  });
+
+  morseTimer = setTimeout(()=>{
+    if(running) playMorse();
+  }, (totalDur + REPEAT)*1000);
+}
+
+/* ── CHECK ANSWER ── */
+function checkAnswer(){
+  const inp = document.getElementById('answerInput');
+  const val = inp.value.trim().toUpperCase();
+  const fb  = document.getElementById('feedback');
+  if(val === 'HELP'){
+    inp.classList.remove('wrong'); inp.classList.add('correct');
+    fb.textContent = '✓ صحيح — الرسالة هي HELP';
+    fb.className = 'feedback ok';
+    running = false;
+    clearTimeout(morseTimer);
+    setTimeout(()=>{
+      const suc = document.getElementById('success');
+      suc.style.display='block';
+      suc.scrollIntoView({behavior:'smooth',block:'nearest'});
+    },700);
+  } else {
+    inp.classList.remove('correct'); inp.classList.add('wrong');
+    fb.textContent = '✗ حاول مرة اخرى — استمع بتمعن';
+    fb.className = 'feedback err';
+    setTimeout(()=>inp.classList.remove('wrong'),400);
+  }
+}
+
+document.getElementById('answerInput').addEventListener('keydown', e=>{
+  if(e.key==='Enter') checkAnswer();
+});
+
+/* ── START ── */
+function startExperience(){
+  document.getElementById('play-screen').style.display='none';
+  getCtx();
+  running = true;
+  playMorse();
+}
+</script>
+</body>
+</html>
